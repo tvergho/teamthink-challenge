@@ -53,7 +53,8 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "import"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -62,15 +63,18 @@
         }
     },
     "settings": {
-        "import/resolver": {
-          "alias": [
-            ["components", "./components"],
-            ["utils", "./utils"],
-            ["styles", "./styles"],
-            ["public", "./public"],
-            ["resolvers", "./resolvers"],
-            ["lib", "./lib"]
-          ]
-        }
+      "import/resolver": {
+        "typescript": {},
+        "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        },
+        "alias": [
+          ["components", "./components"],
+          ["utils", "./utils"],
+          ["styles", "./styles"],
+          ["public", "./public"],
+          ["lib", "./lib"]
+        ]
       }
+    }
 }

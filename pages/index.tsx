@@ -1,8 +1,8 @@
-import styles from '../styles/Home.module.css';
+import Layout from 'components/Layout';
 
 const Home = (): JSX.Element => {
   return (
-    <div className={styles.container} />
+    <Layout title="Home" description="TeamThink is a group interview platform designed to make testing teams easy." />
   );
 };
 
