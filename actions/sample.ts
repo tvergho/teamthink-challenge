@@ -1,4 +1,4 @@
-import { ThunkResult, GlobalDispatch } from 'types/state';
+import type { ThunkResult, GlobalDispatch } from 'types/state';
 import { ActionTypes, SampleActions } from 'types/sample';
 
 export const sampleFunction = (): SampleActions => {

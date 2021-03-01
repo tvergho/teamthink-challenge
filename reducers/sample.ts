@@ -1,4 +1,5 @@
-import { SampleActions, ActionTypes, SampleState } from 'types/sample';
+import type { SampleActions, SampleState } from 'types/sample';
+import { ActionTypes } from 'types/sample';
 
 const initialState: SampleState = {};
 
