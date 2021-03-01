@@ -7,6 +7,7 @@ type LayoutProps = {
   title: string,
   description: string
 }
+
 const Layout = ({ children, title, description }: LayoutProps): JSX.Element => {
   return (
     <>
