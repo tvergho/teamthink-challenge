@@ -7,7 +7,8 @@
     "parser": "@typescript-eslint/parser",
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jest": true
     },
     "rules": {
         "strict": 0,
@@ -49,7 +50,8 @@
         "@typescript-eslint/interface-name-prefix": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/ban-ts-ignore": "off",
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "import/extensions": 0
     },
     "plugins": [
         "react",
@@ -73,7 +75,10 @@
           ["utils", "./utils"],
           ["styles", "./styles"],
           ["public", "./public"],
-          ["lib", "./lib"]
+          ["lib", "./lib"],
+          ["types", "./types"],
+          ["actions", "./actions"],
+          ["reducers", "./reducers"]
         ]
       }
     }
