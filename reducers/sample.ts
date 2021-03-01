@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
-import { SampleActions } from 'types/sample';
+import { SampleActions, ActionTypes, SampleState } from 'types/sample';
 
-export interface SampleState {}
-
-const initialState = {};
+const initialState: SampleState = {};
 
 const SampleReducer = (state = initialState, action: SampleActions): SampleState => {
   switch (action.type) {
+  case ActionTypes.SAMPLE_ACTION:
+    return state;
   default:
     return state;
   }
