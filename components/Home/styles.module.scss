@@ -19,8 +19,78 @@
   font-size: 1rem;
 }
 
+.pane {
+  width: 60vw;
+  border-radius: 20px;
+  margin: 0 auto;
+  margin-top: 10vh;
+  min-height: 50px;
+}
+
+.vertical {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.section {
+  height: 100%;
+  padding: 10px 20px;
+  padding-bottom: 0;
+}
+
+.gap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.design {
+  width: 40%;
+  background-color: #FF6700;
+  color: white;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.initial-form {
+  width: 60%;
+  background-color: white;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.quote {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.illustration {
+  margin: 0 auto;
+  width: 100%;
+}
+
 @media screen and (max-width: $mobile-width) {
   .admin {
     top: 2vh;
+  }
+  .vertical {
+    flex-direction: column;
+  }
+  .design, .initial-form {
+    width: 100%;
+  }
+  .design {
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 0px;
+    text-align: center;
+  }
+  .initial-form {
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 20px;
   }
 }
