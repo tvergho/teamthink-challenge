@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 html,
 body {
   padding: 0;
@@ -25,4 +27,13 @@ input:focus, button:focus, div:focus {
 button, a {
   border: 0;
   cursor: pointer;
+}
+
+.transparent {
+  outline: 0;
+  background: none;
+}
+
+html {
+  @include fluid-type($min-width, $container-width, $min-font, $max-font);
 }

@@ -9,3 +9,18 @@
   width: 100%;
   padding: 0px 20px;
 }
+
+.admin {
+  @include opacity-change;
+  position: absolute;
+  top: 5vh;
+  right: 5vw;
+  color: white;
+  font-size: 1rem;
+}
+
+@media screen and (max-width: $mobile-width) {
+  .admin {
+    top: 2vh;
+  }
+}
