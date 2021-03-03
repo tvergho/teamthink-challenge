@@ -3,24 +3,16 @@ import {
 } from 'react';
 import useWindowSize from 'utils/useWindowSize';
 import Image from 'next/image';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, FormHelperText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import BasePane from './BasePane';
+import { Form } from 'utils/useForm';
+import { buttonStyles } from './index';
 import styles from './styles.module.scss';
-
-const buttonStyles = makeStyles({
-  label: {
-    color: 'white',
-    fontSize: '1rem',
-  },
-  root: {
-    marginTop: 20,
-  },
-});
 
 const googleButtonStyles = makeStyles({
   label: {
     fontSize: '1rem',
+    color: '#4285F4',
   },
   root: {
     marginTop: 20,
@@ -52,10 +44,12 @@ const DesignSide = ({ height }: DesignSideProps): JSX.Element => {
 };
 
 type FormSideProps = {
-  forwardRef: (...args: any[]) => void
+  forwardRef: (...args: any[]) => void,
+  form: Form,
+  navigateCreate: () => void
 }
 
-const FormSide = ({ forwardRef }: FormSideProps): JSX.Element => {
+const FormSide = ({ forwardRef, form, navigateCreate }: FormSideProps): JSX.Element => {
   const buttonClasses = buttonStyles();
   const googleButtonClasses = googleButtonStyles();
 
@@ -67,8 +61,9 @@ const FormSide = ({ forwardRef }: FormSideProps): JSX.Element => {
       </div>
 
       <div className={styles['form-block']}>
-        <TextField label="Email" fullWidth variant="outlined" />
-        <Button classes={buttonClasses} fullWidth color="primary" variant="contained">Continue</Button>
+        <TextField label="Email" fullWidth variant="outlined" error={form.errors.email} onChange={form.onChange} value={form.values.email} name="email" />
+        <FormHelperText error={form.errors.email}>{form.errors.email ? 'Invalid email.' : ''}</FormHelperText>
+        <Button classes={buttonClasses} fullWidth color="primary" variant="contained" onClick={navigateCreate}>Continue</Button>
       </div>
 
       <div className={styles['or-block']}>
@@ -82,7 +77,7 @@ const FormSide = ({ forwardRef }: FormSideProps): JSX.Element => {
           <div className={styles['google-icon']}>
             <Image width={18} height={18} src="/icons/google.png" />
           </div>
-          <span>Sign In With Email</span>
+          <span>Sign In With Google</span>
         </Button>
         <TextField label="Email" fullWidth variant="outlined" />
         <Button classes={buttonClasses} fullWidth color="primary" variant="contained">Sign In With Email</Button>
@@ -91,7 +86,12 @@ const FormSide = ({ forwardRef }: FormSideProps): JSX.Element => {
   );
 };
 
-const InitialAccountPane = (): JSX.Element => {
+type InitialAccountProps = {
+  form: Form,
+  navigateCreate: () => void
+}
+
+const InitialAccountPane = ({ form, navigateCreate }: InitialAccountProps): JSX.Element => {
   const designRef = useRef<HTMLElement>(null);
   const [height, setHeight] = useState(-1);
   const { width } = useWindowSize();
@@ -104,12 +104,10 @@ const InitialAccountPane = (): JSX.Element => {
   }, [width]);
 
   return (
-    <BasePane>
-      <div className={styles.vertical}>
-        <DesignSide height={height} />
-        <FormSide forwardRef={setRef} />
-      </div>
-    </BasePane>
+    <div className={styles.vertical}>
+      <DesignSide height={height} />
+      <FormSide forwardRef={setRef} form={form} navigateCreate={navigateCreate} />
+    </div>
   );
 };
 
