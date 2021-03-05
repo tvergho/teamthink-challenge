@@ -44,6 +44,13 @@ p {
   margin: 1rem 0;
 }
 
+.error {
+  position: absolute;
+  width: 100vw;
+  top: 0;
+  left: 0;
+}
+
 html {
   @include fluid-type($min-width, $container-width, $min-font, $max-font);
 }

@@ -1,5 +1,6 @@
 import { NextSeo } from 'next-seo';
 import { siteName } from 'lib/constants';
+import ErrorNotification from 'components/ErrorNotification';
 import styles from './styles.module.scss';
 
 type LayoutProps = {
@@ -18,6 +19,7 @@ const Layout = ({
       <main className={`${styles.container} ${className}`}>
         {children}
       </main>
+      <ErrorNotification />
     </>
   );
 };

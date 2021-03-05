@@ -1,8 +1,9 @@
 import { ActionTypes, GlobalActions } from 'types/global';
 
-export const handleError = (e: Error): GlobalActions => {
+export const setError = (e: Error | string, display: boolean): GlobalActions => {
   console.log(e);
-  return { type: ActionTypes.SET_ERROR, payload: e.message };
+  if (display) return { type: ActionTypes.SET_ERROR, payload: typeof e === 'string' ? e : e.message };
+  else return { type: ActionTypes.SET_ERROR, payload: '' };
 };
 
 export * from './rooms';
