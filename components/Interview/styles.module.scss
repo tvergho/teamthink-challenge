@@ -17,7 +17,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 70px;
 
   h1 {
     text-align: center;
@@ -47,7 +47,7 @@
   color: white;
   font-size: 1.1rem;
   width: 70%;
-  padding: 20px 0;
+  padding: 20px;
   border-radius: 20px; 
 
   &:disabled {
@@ -62,4 +62,20 @@
 
 .inactive {
   background-color: #AFAFAF;
+}
+
+.slot-text {
+  font-weight: 400;
+  margin-top: 20px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+@media screen and (max-width: $mobile-width) {
+  .info, .slot {
+    width: 70%;
+  }
+  .action-button {
+    width: 100%;
+  }
 }
