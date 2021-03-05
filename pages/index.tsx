@@ -4,7 +4,7 @@ import Layout from 'components/Layout';
 import {
   Header, InitialAccountPane, BasePane, CreateAccountPane,
 } from 'components/Home';
-import styles from 'styles/Home.module.scss';
+import styles from 'styles/page.module.scss';
 
 const Home = (): JSX.Element => {
   const [visiblePane, setVisiblePane] = useState('initial');
