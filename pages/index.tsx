@@ -4,9 +4,11 @@ import Layout from 'components/Layout';
 import {
   Header, InitialAccountPane, BasePane, CreateAccountPane,
 } from 'components/Home';
+import { useRouter } from 'next/router';
 import styles from 'styles/page.module.scss';
 
 const Home = (): JSX.Element => {
+  const router = useRouter();
   const [visiblePane, setVisiblePane] = useState('initial');
 
   const form = useForm({
@@ -28,7 +30,9 @@ const Home = (): JSX.Element => {
   };
 
   const onCreateAccount = () => {
-    validate();
+    if (validate()) {
+      router.push('/interview');
+    }
   };
 
   return (
