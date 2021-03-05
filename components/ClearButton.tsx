@@ -1,11 +1,11 @@
-type ClearButtonProps = {
+type ClearButtonProps = React.ComponentProps<'button'> & {
   className?: string
-  children?: React.ReactNode
+  children?: React.ReactNode,
 }
 
-const ClearButton = ({ className = '', children }: ClearButtonProps): JSX.Element => {
+const ClearButton = ({ className = '', children, ...buttonProps }: ClearButtonProps): JSX.Element => {
   return (
-    <button className={`transparent ${className}`} type="button">{children}</button>
+    <button className={`transparent ${className}`} type="button" {...buttonProps}>{children}</button>
   );
 };
 
