@@ -13,3 +13,14 @@ export const getRooms = (): ThunkResult => {
     }
   };
 };
+
+export const requestAccess = (roomId: string): ThunkResult => {
+  return async (dispatch: GlobalDispatch) => {
+    try {
+      const token = await RoomService.requestAccess(roomId);
+      dispatch({ type: ActionTypes.UPDATE_ROOM_TOKEN, payload: token });
+    } catch (e) {
+      dispatch(setError(e, true));
+    }
+  };
+};

@@ -6,6 +6,10 @@ const URL = `${apiUrl}/rooms`;
 
 export const getRooms = async (): Promise<[Room]> => {
   const { data } = await axios.get(URL);
-  console.log(data);
   return data;
+};
+
+export const requestAccess = async (roomId: string): Promise<string> => {
+  const { data } = await axios.post(`${URL}/${roomId}`);
+  return data.token;
 };
