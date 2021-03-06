@@ -19,35 +19,13 @@ const RoomPage = (): JSX.Element => {
   const [twilioRoom, setTwilioRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
   const [hasConnected, setHasConnected] = useState(false);
+  const [connecting, setConnecting] = useState(true);
 
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(onRoomLoad(roomName));
     }
   }, [roomName, isAuthenticated]);
-
-  const tryConnect = useCallback(async () => {
-    const participantConnected = (participant) => {
-      setParticipants((prevParticipants) => [...prevParticipants, participant]);
-    };
-    const participantDisconnected = (participant) => {
-      setParticipants((prevParticipants) => prevParticipants.filter((p) => p !== participant));
-    };
-
-    if (roomToken && currentRoom && !twilioRoom && !hasConnected) {
-      try {
-        setHasConnected(true);
-        const newRoom = await Video.connect(roomToken, { name: currentRoom.name });
-        newRoom.on('participantConnected', participantConnected);
-        newRoom.on('participantDisconnected', participantDisconnected);
-        newRoom.participants.forEach(participantConnected);
-        setTwilioRoom(newRoom);
-      } catch (e) {
-        setHasConnected(false);
-        dispatch(setError(e, true));
-      }
-    }
-  }, [roomToken, currentRoom, twilioRoom, hasConnected]);
 
   const disconnect = () => {
     setTwilioRoom((currentRoom) => {
@@ -61,7 +39,33 @@ const RoomPage = (): JSX.Element => {
         return currentRoom;
       }
     });
+    setConnecting(false);
+    setHasConnected(false);
   };
+
+  const tryConnect = useCallback(async () => {
+    const participantConnected = (participant) => {
+      setParticipants((prevParticipants) => [...prevParticipants, participant]);
+    };
+    const participantDisconnected = (participant) => {
+      setParticipants((prevParticipants) => prevParticipants.filter((p) => p !== participant));
+    };
+
+    if (roomToken && currentRoom && !twilioRoom && !hasConnected) {
+      try {
+        setHasConnected(true);
+
+        const newRoom = await Video.connect(roomToken, { name: currentRoom.name });
+        newRoom.on('participantConnected', participantConnected);
+        newRoom.on('participantDisconnected', participantDisconnected);
+        newRoom.participants.forEach(participantConnected);
+        setTwilioRoom(newRoom);
+      } catch (e) {
+        disconnect();
+        dispatch(setError(e, true));
+      }
+    }
+  }, [roomToken, currentRoom, twilioRoom, hasConnected]);
 
   useEffect(() => {
     tryConnect();
@@ -76,9 +80,9 @@ const RoomPage = (): JSX.Element => {
   return (
     <Layout title={`Room ${roomName}`} description={`Ongoing interview session with group ${roomName}.`} className={styles.room}>
       <PrivateRoute>
-        {loading && <Message message="Loading..." />}
-        {!loading && roomToken && currentRoom && <VideoChat room={twilioRoom} participants={participants} />}
-        {!loading && (!roomToken || !currentRoom) && <Message message="Your call has ended." />}
+        {(loading || (!twilioRoom && hasConnected)) && <Message message="Loading..." />}
+        {!loading && roomToken && currentRoom && twilioRoom && <VideoChat room={twilioRoom} participants={participants} />}
+        {!loading && (!roomToken || !currentRoom) && !connecting && <Message message="Your call has ended." />}
       </PrivateRoute>
     </Layout>
   );

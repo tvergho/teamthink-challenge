@@ -1,14 +1,24 @@
-import type { Room, Participant } from 'twilio-video';
+import type { Room, Participant as ParticipantType } from 'twilio-video';
+import Participant from './Participant';
 import styles from './styles.module.scss';
 
 type VideoChatProps = {
-  participants: Participant[],
+  participants: ParticipantType[],
   room: Room
 }
 
 const VideoChat = ({ room, participants }: VideoChatProps): JSX.Element => {
   return (
-    <div className={styles.video} />
+    <div className={styles['video-container']}>
+      <div className={styles['video-side']}>
+        {participants.map((participant) => (
+          <Participant key={participant.sid} participant={participant} />
+        ))}
+      </div>
+      <div className={styles['video-main']}>
+        <Participant participant={room.localParticipant} />
+      </div>
+    </div>
   );
 };
 
