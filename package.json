@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest --watch",
-    "postbuild": "next-on-netlify"
+    "test": "jest --watch"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -17,7 +16,6 @@
     "axios": "^0.21.1",
     "jwt-decode": "^3.1.2",
     "next": "10.0.7",
-    "next-on-netlify": "^2.9.0",
     "next-seo": "^4.20.0",
     "package.json": "^2.0.1",
     "react": "17.0.1",
