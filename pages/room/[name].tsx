@@ -1,5 +1,5 @@
 import type { RootState } from 'types/state';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import Video from 'twilio-video';
 import Layout from 'components/Layout';
 import { useSelector, useDispatch } from 'react-redux';
