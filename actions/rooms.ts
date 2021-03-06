@@ -1,6 +1,7 @@
-import type { ThunkResult, GlobalDispatch } from 'types/state';
+import type { ThunkResult, GlobalDispatch, RootState } from 'types/state';
 import { ActionTypes, Room, RoomActions } from 'types/room';
 import * as RoomService from 'services/rooms';
+import { accessTokenKey } from 'lib/constants';
 import { setError } from './index';
 
 export const getRooms = (): ThunkResult => {
@@ -41,4 +42,44 @@ export const createRoom = (name: string): ThunkResult => {
 
 export const setCurrentRoom = (room: Room): RoomActions => {
   return { type: ActionTypes.SET_CURRENT_ROOM, payload: room };
+};
+
+export const onRoomLoad = (roomName: string): ThunkResult => {
+  return async (dispatch: GlobalDispatch, getState: () => RootState) => {
+    dispatch({ type: ActionTypes.SET_LOADING, payload: true });
+
+    // First, check if there's an existing token.
+    const roomState = getState().rooms;
+    if (roomState.roomToken) {
+      localStorage.setItem(accessTokenKey, roomState.roomToken);
+      return;
+    }
+
+    // Next, check if there's a token in local storage.
+    const token = localStorage.getItem(accessTokenKey);
+    if (token) {
+      dispatch({ type: ActionTypes.UPDATE_ROOM_TOKEN, payload: token });
+    }
+
+    // Next, check if this room name exists on the server (in production this should also check whether the user is authenticated to access the room).
+    try {
+      const rooms = await RoomService.getRooms();
+      dispatch({ type: ActionTypes.UPDATE_ROOMS, payload: rooms });
+
+      const namedRoom = rooms.find((room) => room.name === roomName);
+
+      if (namedRoom) { // We found a match.
+        dispatch(requestAccess(namedRoom));
+      } else { // There was no room found, end the loading state.
+        dispatch({ type: ActionTypes.SET_LOADING, payload: false });
+      }
+    } catch (e) {
+      dispatch(setError(e, true));
+      dispatch({ type: ActionTypes.SET_LOADING, payload: false });
+    }
+  };
+};
+
+export const setRoomLoading = (loading: boolean): RoomActions => {
+  return { type: ActionTypes.SET_LOADING, payload: loading };
 };
