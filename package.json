@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@types/twilio-video": "^2.7.3",
     "axios": "^0.21.1",

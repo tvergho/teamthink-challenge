@@ -43,6 +43,7 @@ const RoomPage = (): JSX.Element => {
     setHasConnected(false);
     return true;
   };
+
   const participantConnected = (participant) => {
     setParticipants((prevParticipants) => [...prevParticipants, participant]);
   };

@@ -18,7 +18,7 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 20px;
+  padding: 10px;
 }
 
 .video-side {
@@ -30,19 +30,21 @@
 
 .video-main {
   width: 80%;
-  height: 100vh;
   max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
+  position: relative;
 }
 
 .participant {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: relative;
+  margin: 10px 0px;
 }
 
 .name {
@@ -54,4 +56,27 @@
   font-size: 1rem;
   font-weight: 800;
   padding: 10px;
+  display: flex;
+  flex-direction: row;
+
+  * {
+    margin-right: 3px;
+  }
+}
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+}
+
+.camera-off {
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.3rem;
+  text-align: center;
 }
