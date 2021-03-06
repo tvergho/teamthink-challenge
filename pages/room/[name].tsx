@@ -12,15 +12,19 @@ import styles from 'styles/page.module.scss';
 const RoomPage = (): JSX.Element => {
   const dispatch = useDispatch();
   const { roomToken, loading, currentRoom } = useSelector((state: RootState) => state.rooms);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const roomName = (router.query.name as string);
 
   const [twilioRoom, setTwilioRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
+  const [hasConnected, setHasConnected] = useState(false);
 
   useEffect(() => {
-    dispatch(onRoomLoad(roomName));
-  }, [roomName]);
+    if (isAuthenticated) {
+      dispatch(onRoomLoad(roomName));
+    }
+  }, [roomName, isAuthenticated]);
 
   const tryConnect = useCallback(async () => {
     const participantConnected = (participant) => {
@@ -30,18 +34,20 @@ const RoomPage = (): JSX.Element => {
       setParticipants((prevParticipants) => prevParticipants.filter((p) => p !== participant));
     };
 
-    if (roomToken && currentRoom && !twilioRoom) {
+    if (roomToken && currentRoom && !twilioRoom && !hasConnected) {
       try {
+        setHasConnected(true);
         const newRoom = await Video.connect(roomToken, { name: currentRoom.name });
         newRoom.on('participantConnected', participantConnected);
         newRoom.on('participantDisconnected', participantDisconnected);
         newRoom.participants.forEach(participantConnected);
         setTwilioRoom(newRoom);
       } catch (e) {
+        setHasConnected(false);
         dispatch(setError(e, true));
       }
     }
-  }, [roomToken, currentRoom, twilioRoom]);
+  }, [roomToken, currentRoom, twilioRoom, hasConnected]);
 
   const disconnect = () => {
     setTwilioRoom((currentRoom) => {
@@ -58,14 +64,14 @@ const RoomPage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (roomToken && currentRoom) {
-      tryConnect();
-    }
+    tryConnect();
+  }, [tryConnect]);
 
+  useEffect(() => {
     return () => {
       disconnect();
     };
-  }, [tryConnect, roomToken, currentRoom]);
+  }, []);
 
   return (
     <Layout title={`Room ${roomName}`} description={`Ongoing interview session with group ${roomName}.`} className={styles.room}>

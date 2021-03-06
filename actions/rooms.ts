@@ -17,10 +17,10 @@ export const getRooms = (): ThunkResult => {
   };
 };
 
-export const requestAccess = (room: Room): ThunkResult => {
+export const requestAccess = (room: Room, username: string): ThunkResult => {
   return async (dispatch: GlobalDispatch) => {
     try {
-      const token = await RoomService.requestAccess(room.id);
+      const token = await RoomService.requestAccess(room.id, username);
       dispatch({ type: ActionTypes.UPDATE_ROOM_TOKEN, payload: token });
       dispatch({ type: ActionTypes.SET_LOADING, payload: false });
     } catch (e) {
@@ -52,10 +52,11 @@ export const onRoomLoad = (roomName: string): ThunkResult => {
     // First, check if there's an existing token and room stored in Redux.
     // Use that only if the room name matches the URL parameter and the token is valid.
     const roomState = getState().rooms;
+    const user = getState().auth.userInfo;
     if (roomState.currentRoom && roomState.currentRoom.name === roomName) {
       // Reset the token if it's expired.
       if (!isTokenValid(roomState.roomToken)) {
-        dispatch(requestAccess(roomState.currentRoom));
+        dispatch(requestAccess(roomState.currentRoom, user.name));
       } else {
         dispatch({ type: ActionTypes.SET_LOADING, payload: false });
       }
@@ -70,7 +71,7 @@ export const onRoomLoad = (roomName: string): ThunkResult => {
       const namedRoom = rooms.find((room) => room.name === roomName);
 
       if (namedRoom) { // We found a match.
-        dispatch(requestAccess(namedRoom));
+        dispatch(requestAccess(namedRoom, user.name));
         dispatch(setCurrentRoom(namedRoom));
       } else { // There was no room found, end the loading state.
         dispatch({ type: ActionTypes.SET_LOADING, payload: false });

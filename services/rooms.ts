@@ -9,8 +9,8 @@ export const getRooms = async (): Promise<[Room]> => {
   return data;
 };
 
-export const requestAccess = async (roomId: string): Promise<string> => {
-  const { data } = await axios.post(`${URL}/${roomId}`);
+export const requestAccess = async (roomId: string, username: string): Promise<string> => {
+  const { data } = await axios.post(`${URL}/${roomId}`, { username });
   return data.token;
 };
 

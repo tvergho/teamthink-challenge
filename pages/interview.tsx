@@ -15,18 +15,19 @@ const InterviewPage = (): JSX.Element => {
   const {
     rooms, loading, roomToken, currentRoom,
   } = useSelector((state: RootState) => state.rooms);
+  const { isAuthenticated, userInfo } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     dispatch(getRooms());
   }, []);
 
   useEffect(() => {
-    if (rooms.length > 0) {
+    if (rooms.length > 0 && isAuthenticated) {
       const room = rooms[0];
-      dispatch(requestAccess(room));
+      dispatch(requestAccess(room, userInfo.name));
       dispatch(setCurrentRoom(room));
     }
-  }, [rooms]);
+  }, [rooms, isAuthenticated]);
 
   useEffect(() => {
     if (!loading && rooms.length === 0) {
