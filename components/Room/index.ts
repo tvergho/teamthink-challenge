@@ -1,3 +1,4 @@
 import Message from './Message';
+import VideoChat from './VideoChat';
 
-export { Message };
+export { Message, VideoChat };

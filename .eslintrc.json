@@ -52,7 +52,8 @@
         "@typescript-eslint/ban-ts-ignore": "off",
         "react/react-in-jsx-scope": "off",
         "import/extensions": 0,
-        "no-shadow": 0
+        "no-shadow": 0,
+        "camelcase": 0
     },
     "plugins": [
         "react",

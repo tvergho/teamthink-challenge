@@ -11,7 +11,9 @@ import styles from 'styles/page.module.scss';
 
 const InterviewPage = (): JSX.Element => {
   const dispatch = useDispatch();
-  const { rooms, loading, roomToken } = useSelector((state: RootState) => state.rooms);
+  const {
+    rooms, loading, roomToken, currentRoom,
+  } = useSelector((state: RootState) => state.rooms);
 
   useEffect(() => {
     dispatch(getRooms());
@@ -35,7 +37,7 @@ const InterviewPage = (): JSX.Element => {
     <Layout title="Interview" description="Enter your group interview here." className={styles.interview}>
       <Header />
       <Info />
-      <Slot active={!!roomToken} />
+      <Slot active={!!roomToken && !!currentRoom} />
     </Layout>
   );
 };
