@@ -12,11 +12,11 @@ const VideoChat = ({ room, participants }: VideoChatProps): JSX.Element => {
     <div className={styles['video-container']}>
       <div className={styles['video-side']}>
         {participants.map((participant) => (
-          <Participant key={participant.sid} participant={participant} />
+          <Participant key={participant.sid} participant={participant} width="100%" />
         ))}
       </div>
       <div className={styles['video-main']}>
-        <Participant participant={room.localParticipant} />
+        <Participant participant={room.localParticipant} width="100%" height="90vh" />
       </div>
     </div>
   );

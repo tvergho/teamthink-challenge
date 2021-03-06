@@ -18,8 +18,8 @@ const RoomPage = (): JSX.Element => {
 
   const [twilioRoom, setTwilioRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  const [hasConnected, setHasConnected] = useState(false);
-  const [connecting, setConnecting] = useState(true);
+  const [hasConnected, setHasConnected] = useState(false); // Whether the process of connection has started.
+  const [hasDisconnected, setHasDisconnected] = useState(true);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -39,7 +39,7 @@ const RoomPage = (): JSX.Element => {
         return currentRoom;
       }
     });
-    setConnecting(false);
+    setHasDisconnected(false);
     setHasConnected(false);
   };
 
@@ -78,11 +78,11 @@ const RoomPage = (): JSX.Element => {
   }, []);
 
   return (
-    <Layout title={`Room ${roomName}`} description={`Ongoing interview session with group ${roomName}.`} className={styles.room}>
+    <Layout title={`Room ${roomName || ''}`} description={`Ongoing interview session with group ${roomName}.`} className={styles.room}>
       <PrivateRoute>
         {(loading || (!twilioRoom && hasConnected)) && <Message message="Loading..." />}
         {!loading && roomToken && currentRoom && twilioRoom && <VideoChat room={twilioRoom} participants={participants} />}
-        {!loading && (!roomToken || !currentRoom) && !connecting && <Message message="Your call has ended." />}
+        {!loading && (!roomToken || !currentRoom) && !hasDisconnected && <Message message="Your call has ended." />}
       </PrivateRoute>
     </Layout>
   );

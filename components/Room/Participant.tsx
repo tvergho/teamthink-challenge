@@ -8,13 +8,15 @@ import styles from './styles.module.scss';
 
 type ParticipantProps = {
   participant: ParticipantType
+  width?: string | number,
+  height?: string | number
 }
 
 const trackpubsToTracks = (trackMap: Map<string, VideoTrackPublication | AudioTrackPublication>) => Array.from(trackMap.values())
   .map((publication) => publication.track)
   .filter((track) => track !== null);
 
-const Participant = ({ participant }: ParticipantProps): JSX.Element => {
+const Participant = ({ participant, width, height }: ParticipantProps): JSX.Element => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
 
@@ -72,9 +74,9 @@ const Participant = ({ participant }: ParticipantProps): JSX.Element => {
   }, [audioTracks]);
 
   return (
-    <div className={styles.participant}>
-      <h3>{participant.identity}</h3>
-      <video ref={videoRef} autoPlay />
+    <div className={styles.participant} style={{ width, height }}>
+      <div className={styles.name}><h3>{participant.identity}</h3></div>
+      <video ref={videoRef} autoPlay style={{ width, height, objectFit: 'cover' }} />
       <audio ref={audioRef} autoPlay muted />
     </div>
   );
