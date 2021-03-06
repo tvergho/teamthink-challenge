@@ -19,7 +19,7 @@ const RoomPage = (): JSX.Element => {
   const [twilioRoom, setTwilioRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
   const [hasConnected, setHasConnected] = useState(false); // Whether the process of connection has started.
-  const [hasDisconnected, setHasDisconnected] = useState(true);
+  const [hasDisconnected, setHasDisconnected] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -39,19 +39,19 @@ const RoomPage = (): JSX.Element => {
         return currentRoom;
       }
     });
-    setHasDisconnected(false);
+    setHasDisconnected(true);
     setHasConnected(false);
+    return true;
+  };
+  const participantConnected = (participant) => {
+    setParticipants((prevParticipants) => [...prevParticipants, participant]);
+  };
+  const participantDisconnected = (participant) => {
+    setParticipants((prevParticipants) => prevParticipants.filter((p) => p !== participant));
   };
 
-  const tryConnect = useCallback(async () => {
-    const participantConnected = (participant) => {
-      setParticipants((prevParticipants) => [...prevParticipants, participant]);
-    };
-    const participantDisconnected = (participant) => {
-      setParticipants((prevParticipants) => prevParticipants.filter((p) => p !== participant));
-    };
-
-    if (roomToken && currentRoom && !twilioRoom && !hasConnected) {
+  const tryConnect = async () => {
+    if (roomToken && currentRoom && !twilioRoom && !hasConnected && !hasDisconnected) {
       try {
         setHasConnected(true);
 
@@ -65,15 +65,19 @@ const RoomPage = (): JSX.Element => {
         dispatch(setError(e, true));
       }
     }
-  }, [roomToken, currentRoom, twilioRoom, hasConnected]);
+  };
 
   useEffect(() => {
     tryConnect();
   }, [tryConnect]);
 
   useEffect(() => {
+    window.addEventListener('beforeunload', disconnect);
+    router.beforePopState(disconnect);
+
     return () => {
       disconnect();
+      window.removeEventListener('beforeunload', disconnect);
     };
   }, []);
 
