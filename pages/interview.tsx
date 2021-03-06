@@ -1,9 +1,12 @@
 import type { RootState } from 'types/state';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRooms, requestAccess, createRoom } from 'actions';
+import {
+  getRooms, requestAccess, createRoom, setCurrentRoom,
+} from 'actions';
 import Layout from 'components/Layout';
 import { Header, Info, Slot } from 'components/Interview';
+import generateRandomId from 'utils/generateRandomId';
 import styles from 'styles/page.module.scss';
 
 const InterviewPage = (): JSX.Element => {
@@ -16,13 +19,15 @@ const InterviewPage = (): JSX.Element => {
 
   useEffect(() => {
     if (rooms.length > 0) {
-      dispatch(requestAccess(rooms[0].id));
+      const room = rooms[0];
+      dispatch(requestAccess(room));
+      dispatch(setCurrentRoom(room));
     }
   }, [rooms]);
 
   useEffect(() => {
     if (!loading && rooms.length === 0) {
-      dispatch(createRoom());
+      dispatch(createRoom(generateRandomId(6)));
     }
   }, [loading]);
 

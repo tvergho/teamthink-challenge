@@ -14,7 +14,7 @@ export const requestAccess = async (roomId: string): Promise<string> => {
   return data.token;
 };
 
-export const createRoom = async (): Promise<Room> => {
-  const { data } = await axios.post(URL);
+export const createRoom = async (name: string): Promise<Room> => {
+  const { data } = await axios.post(URL, { name });
   return data;
 };

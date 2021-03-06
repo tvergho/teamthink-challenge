@@ -1,5 +1,5 @@
 import type { ThunkResult, GlobalDispatch } from 'types/state';
-import { ActionTypes } from 'types/room';
+import { ActionTypes, Room, RoomActions } from 'types/room';
 import * as RoomService from 'services/rooms';
 import { setError } from './index';
 
@@ -16,10 +16,10 @@ export const getRooms = (): ThunkResult => {
   };
 };
 
-export const requestAccess = (roomId: string): ThunkResult => {
+export const requestAccess = (room: Room): ThunkResult => {
   return async (dispatch: GlobalDispatch) => {
     try {
-      const token = await RoomService.requestAccess(roomId);
+      const token = await RoomService.requestAccess(room.id);
       dispatch({ type: ActionTypes.UPDATE_ROOM_TOKEN, payload: token });
     } catch (e) {
       dispatch(setError(e, true));
@@ -27,13 +27,18 @@ export const requestAccess = (roomId: string): ThunkResult => {
   };
 };
 
-export const createRoom = (): ThunkResult => {
+export const createRoom = (name: string): ThunkResult => {
   return async (dispatch: GlobalDispatch) => {
     try {
-      await RoomService.createRoom();
+      const room = await RoomService.createRoom(name);
+      dispatch({ type: ActionTypes.SET_CURRENT_ROOM, payload: room });
       dispatch(getRooms());
     } catch (e) {
       dispatch(setError(e, true));
     }
   };
+};
+
+export const setCurrentRoom = (room: Room): RoomActions => {
+  return { type: ActionTypes.SET_CURRENT_ROOM, payload: room };
 };

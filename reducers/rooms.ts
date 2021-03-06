@@ -5,6 +5,7 @@ const initialState: RoomState = {
   rooms: [],
   roomToken: '',
   loading: true,
+  currentRoom: null,
 };
 
 const RoomsReducer = (state = initialState, action: RoomActions): RoomState => {
@@ -17,6 +18,8 @@ const RoomsReducer = (state = initialState, action: RoomActions): RoomState => {
     return { ...state, roomToken: (payload as string) };
   case ActionTypes.SET_LOADING:
     return { ...state, loading: (payload as boolean) };
+  case ActionTypes.SET_CURRENT_ROOM:
+    return { ...state, currentRoom: (payload as Room) };
   default:
     return state;
   }
