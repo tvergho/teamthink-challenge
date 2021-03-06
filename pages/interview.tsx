@@ -6,6 +6,7 @@ import {
 } from 'actions';
 import Layout from 'components/Layout';
 import { Header, Info, Slot } from 'components/Interview';
+import PrivateRoute from 'components/PrivateRoute';
 import generateRandomId from 'utils/generateRandomId';
 import styles from 'styles/page.module.scss';
 
@@ -35,9 +36,11 @@ const InterviewPage = (): JSX.Element => {
 
   return (
     <Layout title="Interview" description="Enter your group interview here." className={styles.interview}>
-      <Header />
-      <Info />
-      <Slot active={!!roomToken && !!currentRoom} />
+      <PrivateRoute>
+        <Header />
+        <Info />
+        <Slot active={!!roomToken && !!currentRoom} />
+      </PrivateRoute>
     </Layout>
   );
 };

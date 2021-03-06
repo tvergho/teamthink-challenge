@@ -7,3 +7,4 @@ export const setError = (e: Error | string, display: boolean): GlobalActions => 
 };
 
 export * from './rooms';
+export * from './auth';

@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { onRoomLoad, setError } from 'actions';
 import { Message, VideoChat } from 'components/Room';
+import PrivateRoute from 'components/PrivateRoute';
 import styles from 'styles/page.module.scss';
 
 const RoomPage = (): JSX.Element => {
@@ -31,7 +32,6 @@ const RoomPage = (): JSX.Element => {
 
     if (roomToken && currentRoom && !twilioRoom) {
       try {
-        console.log(roomToken);
         const newRoom = await Video.connect(roomToken, { name: currentRoom.name });
         newRoom.on('participantConnected', participantConnected);
         newRoom.on('participantDisconnected', participantDisconnected);
@@ -69,9 +69,11 @@ const RoomPage = (): JSX.Element => {
 
   return (
     <Layout title={`Room ${roomName}`} description={`Ongoing interview session with group ${roomName}.`} className={styles.room}>
-      {loading && <Message message="Loading..." />}
-      {!loading && roomToken && currentRoom && <VideoChat room={twilioRoom} participants={participants} />}
-      {!loading && (!roomToken || !currentRoom) && <Message message="Your call has ended." />}
+      <PrivateRoute>
+        {loading && <Message message="Loading..." />}
+        {!loading && roomToken && currentRoom && <VideoChat room={twilioRoom} participants={participants} />}
+        {!loading && (!roomToken || !currentRoom) && <Message message="Your call has ended." />}
+      </PrivateRoute>
     </Layout>
   );
 };

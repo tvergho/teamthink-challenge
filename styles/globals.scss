@@ -51,6 +51,14 @@ p {
   left: 0;
 }
 
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+
 html {
   @include fluid-type($min-width, $container-width, $min-font, $max-font);
 }

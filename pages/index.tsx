@@ -5,10 +5,13 @@ import {
   Header, InitialAccountPane, BasePane, CreateAccountPane,
 } from 'components/Home';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { registerUser } from 'actions';
 import styles from 'styles/page.module.scss';
 
 const Home = (): JSX.Element => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [visiblePane, setVisiblePane] = useState('initial');
 
   const form = useForm({
@@ -19,7 +22,7 @@ const Home = (): JSX.Element => {
     confirmPassword: { required: true, validate: 'confirmPassword' },
   });
   const {
-    validate, clearErrors,
+    validate, clearErrors, values,
   } = form;
 
   const navigateCreate = () => {
@@ -31,6 +34,8 @@ const Home = (): JSX.Element => {
 
   const onCreateAccount = () => {
     if (validate()) {
+      const { email, name, phone } = values;
+      dispatch(registerUser({ email, name, phone }));
       router.push('/interview');
     }
   };
