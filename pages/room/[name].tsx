@@ -4,7 +4,8 @@ import Layout from 'components/Layout';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { setRoomLoading, onRoomLoad } from 'actions';
-import { Loading, Message } from 'components/Room';
+import { Message } from 'components/Room';
+import styles from 'styles/page.module.scss';
 
 const RoomPage = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -23,8 +24,8 @@ const RoomPage = (): JSX.Element => {
   }, [roomToken]);
 
   return (
-    <Layout title={`Room ${roomName}`} description={`Ongoing interview session with group ${roomName}.`}>
-      {loading && <Loading />}
+    <Layout title={`Room ${roomName}`} description={`Ongoing interview session with group ${roomName}.`} className={styles.room}>
+      {loading && <Message message="Loading..." />}
       {!loading && !roomToken && <Message message="Your call has ended." />}
     </Layout>
   );
