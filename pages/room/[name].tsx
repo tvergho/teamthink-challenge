@@ -1,5 +1,5 @@
 import type { RootState } from 'types/state';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import Video from 'twilio-video';
 import Layout from 'components/Layout';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,8 +18,8 @@ const RoomPage = (): JSX.Element => {
 
   const [twilioRoom, setTwilioRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
-  const [hasConnected, setHasConnected] = useState(false);
-  const [connecting, setConnecting] = useState(true);
+  const [hasConnected, setHasConnected] = useState(false); // Whether the process of connection has started.
+  const [hasDisconnected, setHasDisconnected] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -39,19 +39,20 @@ const RoomPage = (): JSX.Element => {
         return currentRoom;
       }
     });
-    setConnecting(false);
+    setHasDisconnected(true);
     setHasConnected(false);
+    return true;
   };
 
-  const tryConnect = useCallback(async () => {
-    const participantConnected = (participant) => {
-      setParticipants((prevParticipants) => [...prevParticipants, participant]);
-    };
-    const participantDisconnected = (participant) => {
-      setParticipants((prevParticipants) => prevParticipants.filter((p) => p !== participant));
-    };
+  const participantConnected = (participant) => {
+    setParticipants((prevParticipants) => [...prevParticipants, participant]);
+  };
+  const participantDisconnected = (participant) => {
+    setParticipants((prevParticipants) => prevParticipants.filter((p) => p !== participant));
+  };
 
-    if (roomToken && currentRoom && !twilioRoom && !hasConnected) {
+  const tryConnect = async () => {
+    if (roomToken && currentRoom && !twilioRoom && !hasConnected && !hasDisconnected) {
       try {
         setHasConnected(true);
 
@@ -65,24 +66,28 @@ const RoomPage = (): JSX.Element => {
         dispatch(setError(e, true));
       }
     }
-  }, [roomToken, currentRoom, twilioRoom, hasConnected]);
+  };
 
   useEffect(() => {
     tryConnect();
   }, [tryConnect]);
 
   useEffect(() => {
+    window.addEventListener('beforeunload', disconnect);
+    router.beforePopState(disconnect);
+
     return () => {
       disconnect();
+      window.removeEventListener('beforeunload', disconnect);
     };
   }, []);
 
   return (
-    <Layout title={`Room ${roomName}`} description={`Ongoing interview session with group ${roomName}.`} className={styles.room}>
+    <Layout title={`Room ${roomName || ''}`} description={`Ongoing interview session with group ${roomName}.`} className={styles.room}>
       <PrivateRoute>
         {(loading || (!twilioRoom && hasConnected)) && <Message message="Loading..." />}
         {!loading && roomToken && currentRoom && twilioRoom && <VideoChat room={twilioRoom} participants={participants} />}
-        {!loading && (!roomToken || !currentRoom) && !connecting && <Message message="Your call has ended." />}
+        {!loading && (!roomToken || !currentRoom) && !hasDisconnected && <Message message="Your call has ended." />}
       </PrivateRoute>
     </Layout>
   );
