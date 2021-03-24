@@ -1,36 +1,19 @@
-# TeamThink Frontend
+# TeamThink Challenge
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is the frontend development challenge for TeamThink. This is a Next.js app built using React and TypeScript. You'll need basic dependencies like Yarn, Node, Homebrew, etc. installed first.
 
-## Getting Started
+## Development Environment Setup
 
-First, run the development server:
+1. Fork this repository. Clone the resulting repository locally and run `yarn install` to install dependencies.
+2. Next, start the development server with the `yarn dev` command. 
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## The Challenge
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Your challenge will be to begin to construct the admin functionality for the application. The **minimum viable specs** for the admin functionality is building out the UI for the two screens included in the Figma link below. That means adding two additional pages to the application that adhere to the provided designs as closely as possible. The first of those pages should open when the "Admin Login" link is clicked on the current home screen.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+[Link to Figma](https://www.figma.com/file/S2sZOr5JVBGIfLK5lEtwz2/TeamThink-Admin-Screens?node-id=0%3A1)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Beyond that, the rest is totally up to you. You can choose to implement form validation, extend the functionality further by building actual "Add Candidates" and "View Results" screens of your own, or connect the web app to a temporary backend such as Firebase. However, the user should at least be able to navigate to the admin login screen, click the "Sign In" button, and be brought to the next admin page.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+One other note is to try to adhere to existing code structure and style as closely as possible. For instance, using ESLint for linting, keeping components functional and splitting larger components up where necessary, using utility functions and globally defined types – it may help to take a little time exploring the app first before delving into the challenge.
