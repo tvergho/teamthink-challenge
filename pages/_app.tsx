@@ -2,12 +2,9 @@ import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { initializeFirebase } from 'firebase_init';
 import thunk from 'redux-thunk';
 import reducers from 'reducers';
 import '../styles/globals.scss';
-
-initializeFirebase();
 
 const middlewares = [
   thunk,
