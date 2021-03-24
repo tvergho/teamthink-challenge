@@ -1,3 +1,3 @@
 export const siteName = 'TeamThink';
-export const apiUrl = 'http://localhost:8080';
+export const apiUrl = 'https://teamthink-demo.herokuapp.com';
 export const userNameKey = 'userName';
