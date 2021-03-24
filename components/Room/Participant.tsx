@@ -3,27 +3,20 @@
 import type {
   AudioTrackPublication, Participant as ParticipantType, VideoTrackPublication,
 } from 'twilio-video';
-import {
-  VolumeOff, VolumeUp, Videocam, VideocamOff,
-} from '@material-ui/icons';
 import { useState, useEffect, useRef } from 'react';
 import styles from './styles.module.scss';
 
 type ParticipantProps = {
   participant: ParticipantType
-  width?: string | number,
-  height?: string | number
 }
 
 const trackpubsToTracks = (trackMap: Map<string, VideoTrackPublication | AudioTrackPublication>) => Array.from(trackMap.values())
   .map((publication) => publication.track)
   .filter((track) => track !== null);
 
-const Participant = ({ participant, width, height }: ParticipantProps): JSX.Element => {
+const Participant = ({ participant }: ParticipantProps): JSX.Element => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
-  const [videoEnabled, setVideoEnabled] = useState(false);
-  const [audioEnabled, setAudioEnabled] = useState(false);
 
   const videoRef = useRef();
   const audioRef = useRef();
@@ -61,21 +54,7 @@ const Participant = ({ participant, width, height }: ParticipantProps): JSX.Elem
   useEffect(() => {
     const videoTrack = videoTracks[0];
     if (videoTrack) {
-      if (videoTrack.enabled) {
-        videoTrack.attach(videoRef.current);
-      } else {
-        setVideoEnabled(false);
-      }
-
-      videoTrack.on('disabled', () => {
-        setVideoEnabled(false);
-      });
-
-      videoTrack.on('enabled', () => {
-        setVideoEnabled(true);
-        videoTrack.attach(videoRef.current);
-      });
-
+      videoTrack.attach(videoRef.current);
       return () => {
         videoTrack.detach();
       };
@@ -85,21 +64,7 @@ const Participant = ({ participant, width, height }: ParticipantProps): JSX.Elem
   useEffect(() => {
     const audioTrack = audioTracks[0];
     if (audioTrack) {
-      if (audioTrack.enabled) {
-        audioTrack.attach(audioRef.current);
-      } else {
-        setAudioEnabled(false);
-      }
-
-      audioTrack.on('disabled', () => {
-        setAudioEnabled(false);
-      });
-
-      audioTrack.on('enabled', () => {
-        console.log('audio enabled');
-        setAudioEnabled(true);
-        audioTrack.attach(audioRef.current);
-      });
+      audioTrack.attach(videoRef.current);
       return () => {
         audioTrack.detach();
       };
@@ -107,20 +72,10 @@ const Participant = ({ participant, width, height }: ParticipantProps): JSX.Elem
   }, [audioTracks]);
 
   return (
-    <div className={styles.participant} style={{ width, height }}>
-      <div className={styles.name}>
-        <h3>{participant.identity}</h3>
-        {audioEnabled ? <VolumeUp /> : <VolumeOff />}
-        {videoEnabled ? <Videocam /> : <VideocamOff />}
-      </div>
-      <video ref={videoRef}
-        autoPlay
-        style={{
-          width, height, objectFit: 'cover', display: videoEnabled ? 'block' : 'none',
-        }}
-      />
-      {!videoEnabled && <div className={styles['camera-off']} style={{ width, height }}>{participant.identity}</div>}
-      <audio ref={audioRef} autoPlay />
+    <div className={styles.participant}>
+      <h3>{participant.identity}</h3>
+      <video ref={videoRef} autoPlay />
+      <audio ref={audioRef} autoPlay muted />
     </div>
   );
 };
